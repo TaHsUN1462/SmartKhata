@@ -43,7 +43,8 @@ app.post("/data", async (req, res) => {
       console.log("Data Updated Successfully.");
 
       // Manually set the remote repository
-      exec('git remote set-url origin https://github.com/TaHsUN1462/SmartKhata.git', (error, stdout, stderr) => {
+      exec(`git remote set-url origin https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`, (error, stdout, stderr) =>
+      {
         if (error) {
           console.error("Git Remote Set Error:", stderr);
           return res.status(500).json({ error: "Git Remote Set Failed" });
