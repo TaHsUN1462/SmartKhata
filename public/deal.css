@@ -1,0 +1,103 @@
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100dvh;
+}
+.alert, .confirm{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-60%);
+  width: 330px;
+  height: 140px;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9f9f9;
+  z-index: 100;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+  visibility: hidden;
+  opacity: 0;
+}
+#ok{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: none;
+  border: none;
+  color: green;
+  width: 60px;
+  height: 30px;
+}
+.confirmBtn{
+  width: 130px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  gap: 5px;
+}
+#ok:hover, .confirmBtn button:hover{
+  background: #f1f1f1;
+  box-shadow: 0 0 2px black;
+}
+.confirmBtn button{
+  background: none;
+  border: none;
+  color: green;
+  width: 60px;
+  height: 30px;
+}
+.noScroll{
+  overflow: hidden;
+}
+.open{
+  visibility: visible;
+  opacity: 1;
+}
+.overlay{
+  inset: 0;
+  position: fixed;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  visibility: hidden;
+  opacity: 0;
+}
+    .loader{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /* background: red; */
+  }
+  .loader .bubbles{
+    width: 20px;
+    height: 20px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    animation: load 700ms ease infinite alternate;
+    animation-delay: calc((var(--i) * 0.15s) * -1);
+  }
+  @keyframes load{
+    from{
+      transform: scale(0.2);
+    }to{
+      transform: scale(1.1);
+    }
+  }

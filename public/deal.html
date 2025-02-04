@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title> 
+  <link rel="stylesheet" href="/deal.css" type="text/css" media="all" />
+  <script src="/deal.js" type="text/javascript" charset="utf-8" defer></script>
+  <link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    rel="stylesheet">
+</head>
+<body>
+  <button onclick="history.back()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  <h1 id="currentName">nAn</h1> 
+  <h3 id="lastModified">NaN</h3>
+  <h1>বিল</h1>
+  <div class="form">
+    <div class="row">
+      <input type="text" name="" id="itemName">
+      <label for="itemName">আইটেমের নাম</label>
+    </div>
+    <div class="row">
+      <input type="text" name="" id="itemPrice">
+      <label for="itemPrice">দাম</label>
+    </div>
+    <div class="row">
+      <button class="cancelBtn" onclick="cancelEdit()" style="display:none;">বাতিল করুন</button>
+      <button class="addBtn" onclick="addDeal()">যোগ করুন</button>
+    </div>
+  </div>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>নং</th>
+        <th>বিবরণী</th>
+        <th colspan="2">দাম</th>
+      </tr>
+    </thead> 
+    <tbody id="displayDeals">
+      <tr>
+        <td>1</td>
+        <td>নাম</td>
+        <td>দাম</td>
+        <td>
+          <div class="wrapper">
+            <button onclick="editDeal(${index})">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button onclick="removeDeal(${index})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody> 
+    <tfoot>
+      <tr>
+        <th colspan="2">মোট</th>
+        <th id="total" colspan="2">১/=</th>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="overlay"></div> 
+  <div class="alert">
+    <p class="alertMsg">IDK</p> 
+    <button id="ok">OK</button>
+  </div>
+  <div class="confirm">
+    <p class="confirmMsg">IDK</p> 
+    <div class="confirmBtn">
+    <button id="no">CANCEL</button>
+    <button id="yes">OK</button>
+    </div>
+  </div>
+<div class="loader" style="display:none;">
+  <div class="bubbles" style="--i:3"></div>
+  <div class="bubbles" style="--i:2"></div>
+  <div class="bubbles" style="--i:1"></div>
+</div>
+</body>
+</html>

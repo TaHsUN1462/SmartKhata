@@ -1,0 +1,42 @@
+const fs = require("fs");
+const express = require("express");
+const path = require("path");
+const app = express();
+
+app.use(express.json());
+app.use(express.static("public"));
+
+app.get("/", (req, res)=>{
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
+app.get("/data", (req, res)=>{
+  fs.readFile("./data.json", "utf-8", (err, data)=>{
+    if (err) {
+      res.status(500).send("Error: ", err);
+    }else{
+      res.json(JSON.parse(data));
+    }
+  });
+});
+
+app.post("/data", (req, res)=>{
+  let newData = req.body;
+  fs.writeFile("./data.json", JSON.stringify(newData, null, 2), (err)=>{
+    if(err){
+      console.log("Error: ", err);
+      res.status(500).json({ error: "Error Updating File"});
+    }else{
+      console.log("Data Updated Succesfully.");
+      res.json({ message: "Updated Succesfully" });
+    }
+  });
+});
+
+app.get("/deals/:id", (req, res)=>{
+  res.sendFile(path.join(__dirname, `./public/deal.html`));
+});
+
+app.listen(3000, ()=>{
+  console.log("Server Started");
+});
