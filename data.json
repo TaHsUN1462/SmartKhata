@@ -6,8 +6,13 @@
   },
   {
     "name": "fe",
-    "lastModified": "04/02/2025, 06:25 wc Gg",
-    "deals": []
+    "lastModified": "04/02/2025, 08:33 wc Gg",
+    "deals": [
+      {
+        "item": "db",
+        "price": 0
+      }
+    ]
   },
   {
     "name": "gvw",
