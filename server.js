@@ -43,28 +43,29 @@ app.post("/data", async (req, res) => {
 
   fs.writeFile("./data.json", JSON.stringify(newData, null, 2), async (err) => {
     if (err) {
-      res.status(500).json({ error: "Error Updating File" });
-    } else {
-      console.log("Data Updated Successfully.");
-
-      // Pull latest changes from GitHub
-      git.pull("origin", "main")
-        .then(() => {
-          console.log("Git Pulled Successfully");
-
-          // Push the updated file to GitHub
-          return git.add("./data.json")
-            .then(() => git.commit("Updated data.json from API"))
-            .then(() => git.push("origin", "main"));
-        })
-        .then(() => {
-          res.json({ message: "Updated & pushed successfully" });
-        })
-        .catch(gitErr => {
-          console.error("Git Error:", gitErr);
-          res.status(500).json({ error: "Git Operation Failed" });
-        });
+      return res.status(500).json({ error: "Error Updating File" });
     }
+
+    console.log("Data Updated Successfully.");
+
+    // Set user identity before commit
+    git.addConfig("user.name", "tahsun1462");
+    git.addConfig("user.email", "tafa4205@gmail.com");
+
+    git.pull("origin", "main")
+      .then(() => {
+        console.log("Git Pulled Successfully");
+        return git.add("./data.json");
+      })
+      .then(() => git.commit("Updated data.json from API"))
+      .then(() => git.push("origin", "main"))
+      .then(() => {
+        res.json({ message: "Updated & pushed successfully" });
+      })
+      .catch(gitErr => {
+        console.error("Git Error:", gitErr);
+        res.status(500).json({ error: "Git Operation Failed" });
+      });
   });
 });
 
