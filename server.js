@@ -38,15 +38,10 @@ app.post("/data", async (req, res) => {
     } else {
       console.log("Data Updated Successfully.");
 
-      // Ensure the correct remote is set
       exec(`git remote add origin ${REPO_URL}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error("Git Remote Add Error:", stderr);
-        } else {
-          console.log("Git Remote Set Successfully:", stdout);
-        }
+        if (error) console.error("Git Remote Add Error:", stderr);
+        else console.log("Git Remote Set Successfully:", stdout);
 
-        // Pull the latest changes
         exec("git pull origin main", (pullErr, pullStdout, pullStderr) => {
           if (pullErr) {
             console.error("Git Pull Error:", pullStderr);
@@ -54,8 +49,9 @@ app.post("/data", async (req, res) => {
           }
           console.log("Git Pulled Successfully:", pullStdout);
 
-          // Commit and push the update
           git.add("./data.json")
+            .then(() => git.addConfig("user.name", "tahsun1462"))
+            .then(() => git.addConfig("user.email", "tafa4205@gmail.com"))
             .then(() => git.commit("Updated data.json from API"))
             .then(() => git.push("origin", "main"))
             .then(() => {
