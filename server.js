@@ -39,31 +39,29 @@ app.post("/data", async (req, res) => {
     } else {
       console.log("Data Updated Successfully.");
 
-      // Pull the latest changes from GitHub
-      exec("git pull origin main", (error, stdout, stderr) => {
-        if (error) {
-          console.error("Git Pull Error:", stderr);
-          return res.status(500).json({ error: "Git Pull Failed" });
-        }
-        console.log("Git Pulled Successfully:", stdout);
+      // Pull the latest changes using simpleGit (preferred over exec)
+      try {
+        await git.pull(REPO_URL, "main"); // Use simpleGit for pulling
+        console.log("Git Pulled Successfully");
+
+        // Stage and commit the updated data.json
+        await git.add("./data.json");
+        await git.commit("Updated data.json from API");
 
         // Push the updated file back to GitHub
-        git.add("./data.json")
-          .then(() => git.commit("Updated data.json from API"))
-          .then(() => git.push(REPO_URL, "main"))
-          .then(() => {
-            res.json({ message: "Updated & pushed successfully" });
-          })
-          .catch(gitErr => {
-            console.error("Git Push Error:", gitErr);
-            res.status(500).json({ error: "Git Push Failed" });
-          });
-      });
+        await git.push(REPO_URL, "main");
+        console.log("Git Pushed Successfully");
+
+        res.json({ message: "Updated & pushed successfully" });
+      } catch (gitErr) {
+        console.error("Git Error:", gitErr);
+        res.status(500).json({ error: "Git Pull or Push Failed" });
+      }
     }
   });
 });
 
-app.get("/deals/:id", (req, res)=>{
+app.get("/deals/:id", (req, res) => {
   res.sendFile(path.join(__dirname, `./public/deal.html`));
 });
 
