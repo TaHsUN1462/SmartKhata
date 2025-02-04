@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/Tallykhata.git`;  // Use your repo URL
+const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`;  // Use your repo URL
 
 app.use(express.json());
 app.use(express.static("public"));
