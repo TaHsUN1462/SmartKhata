@@ -7,10 +7,6 @@ const { exec } = require("child_process");
 const app = express();
 const git = simpleGit();
 
-// Configure Git user details for Render
-git.raw(['config', '--global', 'user.name', 'tahsun1462']); 
-git.raw(['config', '--global', 'user.email', 'tafa4205@gmail.com']);
-
 require('dotenv').config();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -44,6 +40,10 @@ app.post("/data", async (req, res) => {
       res.status(500).json({ error: "Error Updating File" });
     } else {
       console.log("Data Updated Successfully.");
+
+      // Set user identity for this repository
+      git.raw(['config', 'user.name', 'tahsun1462']);
+      git.raw(['config', 'user.email', 'tafa4205@gmail.com']);
 
       // Pull the latest changes from GitHub
       exec("git pull origin main", (error, stdout, stderr) => {
