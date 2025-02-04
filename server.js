@@ -8,8 +8,13 @@ const app = express();
 const git = simpleGit();
 
 // Configure Git user details
-git.addConfig("user.name", "tahsun1462");
-git.addConfig("user.email", "tafa4205@gmail.com");
+git.raw(["config", "--global", "user.name", "tahsun1462"]);
+git.raw(["config", "--global", "user.email", "tafa4205@gmail.com"]);
+
+// Ensure the remote origin is set
+git.remote(["remove", "origin"]).catch(() => {}); // Remove if it exists
+git.remote(["add", "origin", "https://github.com/TaHsUN1462/SmartKhata.git"])
+  .catch(err => console.error("Git Remote Set Error:", err));
 
 require("dotenv").config();
 
@@ -42,45 +47,29 @@ app.post("/data", async (req, res) => {
     } else {
       console.log("Data Updated Successfully.");
 
-      // Ensure correct Git remote
-      exec(
-        `git remote set-url origin ${REPO_URL}`,
-        (error, stdout, stderr) => {
-          if (error) {
-            console.error("Git Remote Set Error:", stderr);
-            return res.status(500).json({ error: "Git Remote Set Failed" });
-          }
+      // Pull latest changes from GitHub
+      git.pull("origin", "main")
+        .then(() => {
+          console.log("Git Pulled Successfully");
 
-          console.log("Git Remote Updated:", stdout);
-
-          // Pull latest changes
-          exec("git pull origin main", (error, stdout, stderr) => {
-            if (error) {
-              console.error("Git Pull Error:", stderr);
-              return res.status(500).json({ error: "Git Pull Failed" });
-            }
-            console.log("Git Pulled Successfully:", stdout);
-
-            // Push the updated file back to GitHub
-            git.add("./data.json")
-              .then(() => git.commit("Updated data.json from API"))
-              .then(() => git.push(["-u", "origin", "main"])) // Fix for Render
-              .then(() => {
-                res.json({ message: "Updated & pushed successfully" });
-              })
-              .catch((gitErr) => {
-                console.error("Git Push Error:", gitErr);
-                res.status(500).json({ error: "Git Push Failed" });
-              });
-          });
-        }
-      );
+          // Push the updated file to GitHub
+          return git.add("./data.json")
+            .then(() => git.commit("Updated data.json from API"))
+            .then(() => git.push("origin", "main"));
+        })
+        .then(() => {
+          res.json({ message: "Updated & pushed successfully" });
+        })
+        .catch(gitErr => {
+          console.error("Git Error:", gitErr);
+          res.status(500).json({ error: "Git Operation Failed" });
+        });
     }
   });
 });
 
 app.get("/deals/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/deal.html"));
+  res.sendFile(path.join(__dirname, `./public/deal.html`));
 });
 
 app.listen(3000, () => {
