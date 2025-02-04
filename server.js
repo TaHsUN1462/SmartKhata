@@ -7,14 +7,21 @@ const { exec } = require("child_process");
 const app = express();
 const git = simpleGit();
 
-// Configure Git user details
-git.raw(['config', '--global', 'user.name', 'tahsun1462']); 
-git.raw(['config', '--global', 'user.email', 'tafa4205@gmail.com']);
-
 require('dotenv').config();
 
+// Configure Git user details
+git.raw(['config', '--global', 'user.name', 'tahsun1462']);
+git.raw(['config', '--global', 'user.email', 'tafa4205@gmail.com']);
+
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`;  // Use your repo URL
+const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`;
+
+// Ensure remote 'origin' is set
+git.remote(['get-url', 'origin'], (err, url) => {
+  if (err || !url) {
+    git.remote(['add', 'origin', REPO_URL]);
+  }
+});
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -50,7 +57,7 @@ app.post("/data", async (req, res) => {
         }
         console.log("Git Pulled Successfully:", stdout);
 
-        // Push the updated file back to GitHub
+        // Add the file, commit, and push it back to GitHub
         git.add("./data.json")
           .then(() => git.commit("Updated data.json from API"))
           .then(() => git.push(REPO_URL, "main"))
