@@ -27,6 +27,7 @@ function loadData(data){
   displayNames();
 }
 function save(){
+  showLoading();
   fetch("/data", {
     method: "POST",
     headers: {

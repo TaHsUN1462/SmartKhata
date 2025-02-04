@@ -142,6 +142,7 @@ function displayDeals(){
   document.getElementById("lastModified").innerText = `me©‡kl ms‡kvwaZ ZvwiL: ${dealsArray.lastModified}`;
 }
 function save(){
+  showLoading();
   fetch("/data", {
     method: "POST",
     headers: {
