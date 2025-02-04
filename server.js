@@ -7,11 +7,11 @@ const { exec } = require("child_process");
 const app = express();
 const git = simpleGit();
 
-require("dotenv").config();
+// Configure Git user details
+git.addConfig("user.name", "tahsun1462");
+git.addConfig("user.email", "tafa4205@gmail.com");
 
-// Set Git user identity
-git.raw(["config", "--global", "user.name", "tahsun1462"]);
-git.raw(["config", "--global", "user.email", "tafa4205@gmail.com"]);
+require("dotenv").config();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`;
@@ -33,38 +33,49 @@ app.get("/data", (req, res) => {
   });
 });
 
-// Update Data and Push to GitHub
 app.post("/data", async (req, res) => {
   let newData = req.body;
 
   fs.writeFile("./data.json", JSON.stringify(newData, null, 2), async (err) => {
     if (err) {
-      return res.status(500).json({ error: "Error Updating File" });
-    }
+      res.status(500).json({ error: "Error Updating File" });
+    } else {
+      console.log("Data Updated Successfully.");
 
-    console.log("Data Updated Successfully.");
+      // Ensure correct Git remote
+      exec(
+        `git remote set-url origin ${REPO_URL}`,
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error("Git Remote Set Error:", stderr);
+            return res.status(500).json({ error: "Git Remote Set Failed" });
+          }
 
-    // Ensure Git remote is set
-    exec(`git remote remove origin && git remote add origin ${REPO_URL}`, () => {
-      // Pull the latest changes
-      exec("git pull origin main", (error, stdout, stderr) => {
-        if (error) {
-          console.error("Git Pull Error:", stderr);
-          return res.status(500).json({ error: "Git Pull Failed" });
-        }
-        console.log("Git Pulled Successfully:", stdout);
+          console.log("Git Remote Updated:", stdout);
 
-        // Commit & Push Changes
-        git.add("./data.json")
-          .then(() => git.commit("Updated data.json from API"))
-          .then(() => git.push("origin", "main"))
-          .then(() => res.json({ message: "Updated & pushed successfully" }))
-          .catch((gitErr) => {
-            console.error("Git Push Error:", gitErr);
-            res.status(500).json({ error: "Git Push Failed" });
+          // Pull latest changes
+          exec("git pull origin main", (error, stdout, stderr) => {
+            if (error) {
+              console.error("Git Pull Error:", stderr);
+              return res.status(500).json({ error: "Git Pull Failed" });
+            }
+            console.log("Git Pulled Successfully:", stdout);
+
+            // Push the updated file back to GitHub
+            git.add("./data.json")
+              .then(() => git.commit("Updated data.json from API"))
+              .then(() => git.push(["-u", "origin", "main"])) // Fix for Render
+              .then(() => {
+                res.json({ message: "Updated & pushed successfully" });
+              })
+              .catch((gitErr) => {
+                console.error("Git Push Error:", gitErr);
+                res.status(500).json({ error: "Git Push Failed" });
+              });
           });
-      });
-    });
+        }
+      );
+    }
   });
 });
 
