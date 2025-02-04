@@ -41,12 +41,21 @@ app.post("/data", async (req, res) => {
     } else {
       console.log("Data Updated Successfully.");
 
-      exec(`git remote set-url origin https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`, (error, stdout, stderr) => {
-        if (error) {
-          console.error("Git Remote Set Error:", stderr);
-          return res.status(500).json({ error: "Git Remote Set Failed" });
+      exec('git remote -v', (error, stdout, stderr) => {
+        if (stderr) {
+          console.error("Git Remote Check Error:", stderr);
+          return res.status(500).json({ error: "Error checking Git remote" });
         }
-        console.log("Git Remote Set Successfully:", stdout);
+
+        if (!stdout.includes('origin')) {
+          exec(`git remote add origin ${REPO_URL}`, (addError, addStdout, addStderr) => {
+            if (addError || addStderr) {
+              console.error("Error adding Git remote:", addStderr || addError);
+              return res.status(500).json({ error: "Failed to add Git remote" });
+            }
+            console.log("Git Remote added successfully:", addStdout);
+          });
+        }
 
         exec("git pull origin main", (error, stdout, stderr) => {
           if (error) {
