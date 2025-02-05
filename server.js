@@ -28,22 +28,22 @@ app.get("/", (req, res) => {
 });
 
 app.get("/data", (req, res) => {
-  // fs.readFile("./data.json", "utf-8", (err, data) => {
-  //   if (err) {
-  //     res.status(500).send("Error: " + err);
-  //   } else {
-  //     dataArray = JSON.parse(data);
-  //     res.json(dataArray);
-  //   }
-  // });
-  fetch("https://raw.githubusercontent.com/TaHsUN1462/SmartKhata/main/data.json")
-    .then(response => response.json())
-    .then(data => {
-      res.json(data);
-    })
-    .catch(err =>{
-      console.log("Error Fetching From Github", err);
-    });
+  fs.readFile("./data.json", "utf-8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error: " + err);
+    } else {
+      dataArray = JSON.parse(data);
+      res.json(dataArray);
+    }
+  });
+  // fetch("https://raw.githubusercontent.com/TaHsUN1462/SmartKhata/main/data.json")
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     res.json(data);
+  //   })
+  //   .catch(err =>{
+  //     console.log("Error Fetching From Github", err);
+  //   });
 });
 
 app.post("/data", async (req, res) => {
