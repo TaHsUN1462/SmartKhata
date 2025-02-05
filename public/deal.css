@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: 200ms ease all;
 }
 body{
   display: flex;
@@ -67,6 +68,10 @@ body{
   visibility: visible;
   opacity: 1;
 }
+.overlay.open{
+  visibility: visible;
+  opacity: 1;
+}
 .overlay{
   inset: 0;
   position: fixed;
@@ -84,15 +89,23 @@ body{
     justify-content: center;
     align-items: center;
     gap: 10px;
+    z-index: 100;
     /* background: red; */
   }
   .loader .bubbles{
     width: 20px;
     height: 20px;
-    background: rgba(0,0,0,0.5);
+    background: rgb(55,25,155);
     border-radius: 50%;
+    border: 1px solid white;
     animation: load 700ms ease infinite alternate;
     animation-delay: calc((var(--i) * 0.15s) * -1);
+  }
+  .loader .bubbles:nth-child(2){
+    background: rgb(23,100,25);
+  }
+  .loader .bubbles:nth-child(3){
+    background: rgb(185,90,5);
   }
   @keyframes load{
     from{

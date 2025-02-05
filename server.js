@@ -1,5 +1,8 @@
 const fs = require("fs");
 const express = require("express");
+const fetch = (...args) => 
+import("node-fetch").then(({ default: fetch }) => 
+fetch(...args));
 const path = require("path");
 const simpleGit = require("simple-git");
 const { exec } = require("child_process");
@@ -15,6 +18,8 @@ require('dotenv').config();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`;
 
+let dataArray = [];
+
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -23,13 +28,22 @@ app.get("/", (req, res) => {
 });
 
 app.get("/data", (req, res) => {
-  fs.readFile("./data.json", "utf-8", (err, data) => {
-    if (err) {
-      res.status(500).send("Error: " + err);
-    } else {
-      res.json(JSON.parse(data));
-    }
-  });
+  // fs.readFile("./data.json", "utf-8", (err, data) => {
+  //   if (err) {
+  //     res.status(500).send("Error: " + err);
+  //   } else {
+  //     dataArray = JSON.parse(data);
+  //     res.json(dataArray);
+  //   }
+  // });
+  fetch("https://raw.githubusercontent.com/TaHsUN1462/SmartKhata/main/data.json")
+    .then(response => response.json())
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err =>{
+      console.log("Error Fetching From Github", err);
+    });
 });
 
 app.post("/data", async (req, res) => {
@@ -95,7 +109,17 @@ app.post("/data", async (req, res) => {
 });
 
 app.get("/deals/:id", (req, res) => {
-  res.sendFile(path.join(__dirname, `./public/deal.html`));
+  const id = Number(req.params.id);
+  if (id > 0 && id <= dataArray.length) {
+    res.sendFile(path.join(__dirname, "./public/deal.html"));
+  } else {
+    res.status(404).sendFile(path.join(__dirname, "public/error.html"));
+    // res.send(dataArray)
+  }
+});
+
+app.use((req, res)=>{
+  res.status(404).sendFile(path.join(__dirname, "public/error.html"));
 });
 
 app.listen(3000, () => {

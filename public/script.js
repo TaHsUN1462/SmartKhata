@@ -46,9 +46,11 @@ function save(){
 }
 function showLoading(){
   document.querySelector(".loader").style.display = "flex";
+  document.querySelector(".overlay").classList.add("open");
 }
 function stopLoading(){
   document.querySelector(".loader").style.display = "none";
+  document.querySelector(".overlay").classList.remove("open");
 }
 function displayNames(){
   document.querySelector(".displayNames").innerHTML = "";
@@ -157,7 +159,7 @@ function confirm(msg, callback){
   document.getElementById("yes").onclick = ()=>{
   callback();
   document.querySelector(".confirm").classList.remove("open");
-  document.querySelector(".overlay").classList.remove("open");
+  // document.querySelector(".overlay").classList.remove("open");
   document.querySelector("body").classList.remove("noScroll");
   };
 }
