@@ -64,9 +64,10 @@ app.post("/data", async (req, res) => {
           }
           console.log("Git Pulled Successfully:", stdout);
 
-          git.addConfig('user.name', 'tahsun1462')
-            .addConfig('user.email', 'tafa4205@gmail.com')
-            .add("./data.json")
+          git.checkout("main")
+            .then(() => git.addConfig('user.name', 'tahsun1462'))
+            .then(() => git.addConfig('user.email', 'tafa4205@gmail.com'))
+            .then(() => git.add("./data.json"))
             .then(() => {
               console.log("Staged changes successfully.");
               return git.commit("Updated data.json from API");
