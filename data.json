@@ -1,8 +1,13 @@
 [
   {
     "name": "Tahsun",
-    "lastModified": "04/02/2025, 09:21 wc Gg",
-    "deals": []
+    "lastModified": "05/02/2025, 01:45 wc Gg",
+    "deals": [
+      {
+        "item": "Vs",
+        "price": 0
+      }
+    ]
   },
   {
     "name": "tahsun",
