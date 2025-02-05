@@ -67,15 +67,25 @@ app.post("/data", async (req, res) => {
           git.addConfig('user.name', 'tahsun1462')
             .addConfig('user.email', 'tafa4205@gmail.com')
             .add("./data.json")
-            .then(() => git.commit("Updated data.json from API"))
-            .then(() => git.push(REPO_URL, "main"))
+            .then(() => {
+              console.log("Staged changes successfully.");
+              return git.commit("Updated data.json from API");
+            })
+            .then(commitSummary => {
+              console.log("Commit Summary:", commitSummary);
+              if (!commitSummary.commit) {
+                console.error("No new changes detected, skipping push.");
+                return res.status(400).json({ error: "No changes to commit." });
+              }
+              return git.push(REPO_URL, "main");
+            })
             .then(() => {
               console.log("Git Push Success!");
               res.json({ message: "Updated & pushed successfully" });
             })
             .catch(gitErr => {
-              console.error("Git Push Error:", gitErr);
-              res.status(500).json({ error: "Git Push Failed" });
+              console.error("Git Error:", gitErr);
+              res.status(500).json({ error: "Git Operation Failed" });
             });
         });
       });
