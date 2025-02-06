@@ -11,8 +11,13 @@
   },
   {
     "name": "ssg",
-    "lastModified": "06/02/2025, 12:05 G Gg",
-    "deals": []
+    "lastModified": "06/02/2025, 12:06 wc Gg",
+    "deals": [
+      {
+        "item": "apple",
+        "price": 200
+      }
+    ]
   },
   {
     "name": "fs",
