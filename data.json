@@ -1,7 +1,7 @@
 [
   {
     "name": "দোকান",
-    "lastModified": "06/02/2025, 10:34 wc Gg",
+    "lastModified": "06/02/2025, 10:35 wc Gg",
     "deals": [
       {
         "item": "Beve",
@@ -30,6 +30,10 @@
       {
         "item": "d s",
         "price": 32
+      },
+      {
+        "item": "bdssw",
+        "price": 53
       }
     ]
   },
