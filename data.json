@@ -1,7 +1,7 @@
 [
   {
     "name": "দোকান",
-    "lastModified": "06/02/2025, 10:25 wc Gg",
+    "lastModified": "06/02/2025, 10:33 wc Gg",
     "deals": [
       {
         "item": "Beve",
@@ -17,6 +17,10 @@
       },
       {
         "item": "হলুদ গুড়া ২০০ গ্রাম",
+        "price": 0
+      },
+      {
+        "item": "bds",
         "price": 0
       }
     ]
