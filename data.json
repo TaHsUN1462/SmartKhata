@@ -10,6 +10,10 @@
       {
         "item": "hfda",
         "price": 0
+      },
+      {
+        "item": "nas",
+        "price": 42
       }
     ]
   },
