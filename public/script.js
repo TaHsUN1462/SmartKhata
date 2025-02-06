@@ -65,6 +65,7 @@ function displayNames(){
         <button class="removeBtn" onclick="removeName(${index})"><i class="fas fa-trash"></i></button>
         <button class="saveBtn" onclick="saveEdit(${index})" style="display:none;"><i class="fas fa-save"></i></button>
         <button class="cancelBtn" style="display:none;"><i class="fas fa-cancel"></i></button>
+      </div>
     `;
     document.querySelector(".displayNames").appendChild(div);
     setupEditHandlers(div, index);
@@ -89,13 +90,14 @@ function setupEditHandlers(div, index){
   cancelBtn.style.display = "inline-block";
   newNameInput.style.display = "inline-block";
   newNameInput.value = editingData.name;
+  newNameInput.focus();
   };
   saveBtn.onclick = () => {
     let newName = newNameInput.value.trim();
     let addedData = array.find(i=> i.name == newName);
     if (newName && !addedData) {
       array[index].name = newNameInput.value.trim();
-    name.style.display = "inline-block";
+    name.style.display = "flex";
   editBtn.style.display = "inline-block";
   removeBtn.style.display = "inline-block";
   saveBtn.style.display = "none";
@@ -111,7 +113,7 @@ function setupEditHandlers(div, index){
     }
   };
   cancelBtn.onclick = () =>{
-    name.style.display = "inline-block";
+    name.style.display = "flex";
   editBtn.style.display = "inline-block";
   removeBtn.style.display = "inline-block";
   saveBtn.style.display = "none";
@@ -177,4 +179,9 @@ function addName(){
     alert("শুন্য নাম সেট করা যাবে না");
   }
 }
+document.getElementById("entryName").addEventListener("keydown", (e)=>{
+  if(e.key == "Enter"){
+  addName();
+  }
+})
 fetchData();

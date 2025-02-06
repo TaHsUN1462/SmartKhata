@@ -12,11 +12,12 @@
     rel="stylesheet">
 </head>
 <body>
-  <button onclick="history.back()">
+  <button class="back" onclick="history.back()">
     <i class="fas fa-chevron-left"></i>
   </button>
-  <h1 id="currentName">nAn</h1> 
-  <h3 id="lastModified">NaN</h3>
+  <div class="container">
+  <h1 id="currentName"></h1> 
+  <h3 id="lastModified"></h3>
   <h1>বিল</h1>
   <div class="form">
     <div class="row">
@@ -24,7 +25,7 @@
       <label for="itemName">আইটেমের নাম</label>
     </div>
     <div class="row">
-      <input type="text" name="" id="itemPrice">
+      <input type="number" name="" id="itemPrice">
       <label for="itemPrice">দাম</label>
     </div>
     <div class="row">
@@ -60,10 +61,13 @@
     <tfoot>
       <tr>
         <th colspan="2">মোট</th>
-        <th id="total" colspan="2">১/=</th>
+        <th id="total" colspan="2">
+          <div></div>
+        </th>
       </tr>
     </tfoot>
   </table>
+  </div>
   <div class="overlay"></div> 
   <div class="alert">
     <p class="alertMsg">IDK</p> 

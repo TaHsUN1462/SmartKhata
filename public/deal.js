@@ -32,6 +32,7 @@ function addDeal(){
     dealsArray.lastModified = lastModified;
     save();
     document.getElementById("itemName").value = "";
+    document.getElementById("itemName").focus();
     document.getElementById("itemPrice").value = "";
   }
   else if(itemAdded){
@@ -137,7 +138,7 @@ function displayDeals(){
     `;
     document.getElementById("displayDeals").appendChild(tr);
   });
-  document.getElementById("total").innerText = `${total}/=`;
+  document.querySelector("#total div").innerText = `${total}/=`;
   document.getElementById("currentName").innerText = `${dealsArray.name}`;
   document.getElementById("lastModified").innerText = `me©‡kl ms‡kvwaZ ZvwiL: ${dealsArray.lastModified}`;
 }
@@ -205,3 +206,8 @@ function confirm(msg, callback){
   document.querySelector("body").classList.remove("noScroll");
   };
 }
+document.getElementById("itemPrice").addEventListener("keydown", (e)=>{
+  if(e.key == "Enter"){
+    addDeal();
+  }
+});

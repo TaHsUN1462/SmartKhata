@@ -1,16 +1,47 @@
+@font-face{
+  src: url("SUTOM___.TTF");
+  font-family: "bangla";
+}
+@font-face{
+  src: url("SolaimanLipi.ttf");
+  font-family: "unicode";
+}
+@font-face{
+  src: url("Poppins-Regular.ttf");
+  font-family: "english";
+}
 *
 {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   transition: 200ms ease all;
+  font-family: "english", "unicode";
+  border-radius: 0;
+  outline: none;
 }
 body{
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   flex-direction: column;
-  height: 100dvh;
+  min-height: 100vh;
+  /* gap: 20px; */
+  padding: 20px 10px;
+  /* margin-top: 20px; */
+  /* margin-bottom: 20px; */
+  font-size: 1.2rem;
+}
+.container{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 50px !important;
+  /* background: red; */
 }
 .alert, .confirm{
   position: fixed;
@@ -114,3 +145,89 @@ body{
       transform: scale(1.1);
     }
   }
+#lastModified, .count{
+  font-family: "bangla";
+  line-height: 20px;
+}
+.back{
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  font-size: 1.2rem;
+  transform: rotate(180deg);
+  background: none;
+  border: solid 1px rgba(0,0,0,0.5);
+  width: 40px;
+  height: 40px;
+  z-index: 56;
+  border-radius: 5px;
+  background: #00aaff;
+}
+h1, h3{
+  align-self: start;
+}
+.form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 340px;
+  padding: 50px 10px;
+  border: solid 1px rgba(0,0,0,0.5);
+}
+.form .row{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  background: red;
+}
+.form .row *{
+  flex-grow: 1;
+  height: 100%;
+}
+.form .row label{
+  position: absolute;
+  top: -25px;
+  left: 0;
+}
+input, button{
+  border: solid 1px rgba(0,0,0,0.5);
+  font-size: 1.05rem;
+}
+input{
+  width: 320px;
+  padding-left: 10px;
+}
+table{
+  width: 340px;
+  border-collapse: collapse;
+}
+td,th{
+  padding: 5px;
+  text-align: center;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+td:nth-child(2){
+  max-width: 150px;
+}
+th:nth-child(1):not([colspan="2"]){
+  /* background: red; */
+  max-width: 20px;
+}
+.count{
+  padding-bottom: 8px;
+}
+.price, #total div{
+  font-family: "bangla";
+  padding-bottom: 10px;
+}
+table button{
+  width: 30px;
+  height: 30px;
+}

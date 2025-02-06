@@ -1,8 +1,6 @@
 const fs = require("fs");
 const express = require("express");
-const fetch = (...args) => 
-import("node-fetch").then(({ default: fetch }) => 
-fetch(...args));
+const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const path = require("path");
 const simpleGit = require("simple-git");
 const { exec } = require("child_process");
@@ -19,11 +17,30 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_URL = `https://${GITHUB_TOKEN}@github.com/TaHsUN1462/SmartKhata.git`;
 
 let dataArray = [];
+let activeUsers = new Set();
+let lastActiveTime = new Date().getTime();
+let isRedeployed = false; // Prevent multiple redeployments
 
 app.use(express.json());
 app.use(express.static("public"));
 
+app.use((req, res, next) => {
+  const currentTime = new Date().getTime();
+  if (currentTime - lastActiveTime > 120000) { // 5 minutes (in milliseconds)
+    if (!isRedeployed) {
+      activeUsers.clear(); // Clear active users if 5 minutes have passed
+      isRedeployed = true; // Set flag to prevent multiple redeployments
+      console.log("No users for 5 minutes. Ready for redeployment.");
+    }
+  }
+  lastActiveTime = currentTime;
+  next();
+});
+
 app.get("/", (req, res) => {
+  const ip = req.ip;
+  activeUsers.add(ip); // Add user to active users list
+  isRedeployed = false; // Reset redeploy flag when a new user joins
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
@@ -36,14 +53,6 @@ app.get("/data", (req, res) => {
       res.json(dataArray);
     }
   });
-  // fetch("https://raw.githubusercontent.com/TaHsUN1462/SmartKhata/main/data.json")
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     res.json(data);
-  //   })
-  //   .catch(err =>{
-  //     console.log("Error Fetching From Github", err);
-  //   });
 });
 
 app.post("/data", async (req, res) => {
@@ -114,11 +123,10 @@ app.get("/deals/:id", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/deal.html"));
   } else {
     res.status(404).sendFile(path.join(__dirname, "public/error.html"));
-    // res.send(dataArray)
   }
 });
 
-app.use((req, res)=>{
+app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, "public/error.html"));
 });
 
