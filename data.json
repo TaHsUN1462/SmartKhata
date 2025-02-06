@@ -1,10 +1,14 @@
 [
   {
     "name": "দোকান",
-    "lastModified": "06/02/2025, 03:15 wc Gg",
+    "lastModified": "06/02/2025, 10:14 wc Gg",
     "deals": [
       {
         "item": "Beve",
+        "price": 0
+      },
+      {
+        "item": "hfda",
         "price": 0
       }
     ]
