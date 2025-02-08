@@ -1,5 +1,6 @@
 const fs = require("fs");
 const express = require("express");
+const favicon = require("serve-favicon");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const path = require("path");
 const simpleGit = require("simple-git");
@@ -23,6 +24,7 @@ let isRedeployed = false; // Prevent multiple redeployments
 
 app.use(express.json());
 app.use(express.static("public"));
+app.use(favicon(path.join(__dirname, "public/favicon.ico")));
 
 app.use((req, res, next) => {
   const currentTime = new Date().getTime();
